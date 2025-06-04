@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://d27a0v0y4gqhj"]
+
+[ext_resource type="Script" path="res://scripts/Wanderer.gd" id="1_ou80v"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_umbn8"]
+radius = 20.0
+
+[node name="Wanderer" type="CharacterBody2D"]
+script = ExtResource("1_ou80v")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="PathLine" type="Line2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_umbn8")
+debug_color = Color(0.392157, 0.509804, 0.882353, 0.376471)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
+radius = 20.0

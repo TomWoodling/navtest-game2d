@@ -1,0 +1,173 @@
+[gd_scene load_steps=16 format=3 uid="uid://kd7rkkcvkdyn"]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_m2est"]
+[ext_resource type="Script" path="res://scripts/NavigationVisualizer.gd" id="2_bs6fc"]
+[ext_resource type="Script" path="res://scripts/Agent.gd" id="3_0ekpf"]
+[ext_resource type="Script" path="res://scripts/Follower.gd" id="4_opqa2"]
+[ext_resource type="Script" path="res://scripts/StaticObstacle.gd" id="5_0qsej"]
+[ext_resource type="Script" path="res://scripts/DynamicObstacle.gd" id="6_y6a85"]
+[ext_resource type="StyleBox" uid="uid://be0munyce2r37" path="res://resources/new_style_box_flat.tres" id="7_3q4mj"]
+[ext_resource type="PackedScene" uid="uid://d27a0v0y4gqhj" path="res://scenes/Wanderer.tscn" id="8_672b2"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_26tn4"]
+vertices = PackedVector2Array(980, 588.203, 980, 689.094, 170, 692.656, 170, 140, 968.859, 140)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(107, 120, 988, 105, 1003, 709, 95, 713)])
+parsed_geometry_type = 1
+agent_radius = 20.0
+baking_rect = Rect2(150, 120, 850, 600)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d218p"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ni26o"]
+radius = 20.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kkbod"]
+radius = 25.0
+height = 100.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_svy3k"]
+radius = 25.0
+height = 100.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jj8wa"]
+radius = 30.0
+
+[sub_resource type="Theme" id="Theme_x7n77"]
+Button/font_sizes/font_size = 12
+Label/font_sizes/font_size = 12
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_m2est")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_26tn4")
+
+[node name="NavigationVisualizer" type="Polygon2D" parent="NavigationRegion2D"]
+script = ExtResource("2_bs6fc")
+
+[node name="Agent" type="CharacterBody2D" parent="."]
+position = Vector2(481, 369)
+script = ExtResource("3_0ekpf")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Agent"]
+radius = 20.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Agent"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Agent"]
+shape = SubResource("CircleShape2D_d218p")
+
+[node name="PathLine" type="Line2D" parent="Agent"]
+
+[node name="Follower" type="CharacterBody2D" parent="."]
+position = Vector2(526, 439)
+script = ExtResource("4_opqa2")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Follower"]
+avoidance_enabled = true
+radius = 20.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Follower"]
+
+[node name="PathLine" type="Line2D" parent="Follower"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Follower"]
+shape = SubResource("CircleShape2D_ni26o")
+debug_color = Color(0.314142, 0.612016, 0.382256, 0.42)
+
+[node name="StaticObstacle1" type="StaticBody2D" parent="."]
+position = Vector2(278, 257)
+script = ExtResource("5_0qsej")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticObstacle1"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticObstacle1"]
+shape = SubResource("CapsuleShape2D_kkbod")
+debug_color = Color(0.786541, 0.252043, 0.86561, 0.42)
+
+[node name="StaticObstacle2" type="StaticBody2D" parent="."]
+position = Vector2(357, 514)
+script = ExtResource("5_0qsej")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticObstacle2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticObstacle2"]
+shape = SubResource("CapsuleShape2D_svy3k")
+debug_color = Color(0.786541, 0.252043, 0.86561, 0.42)
+
+[node name="DynamicObstacle1" type="CharacterBody2D" parent="."]
+position = Vector2(680, 523)
+script = ExtResource("6_y6a85")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="DynamicObstacle1"]
+
+[node name="Sprite2D" type="Sprite2D" parent="DynamicObstacle1"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DynamicObstacle1"]
+shape = SubResource("CircleShape2D_jj8wa")
+debug_color = Color(0.656957, 0.508507, 0.253311, 0.42)
+
+[node name="DynamicObstacle2" type="CharacterBody2D" parent="."]
+position = Vector2(705, 252)
+script = ExtResource("6_y6a85")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="DynamicObstacle2"]
+
+[node name="Sprite2D" type="Sprite2D" parent="DynamicObstacle2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DynamicObstacle2"]
+shape = SubResource("CircleShape2D_jj8wa")
+debug_color = Color(0.656957, 0.508507, 0.253311, 0.42)
+
+[node name="TargetMarker" type="Sprite2D" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PanelContainer" type="PanelContainer" parent="UI"]
+custom_minimum_size = Vector2(270, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_x7n77")
+theme_override_styles/panel = ExtResource("7_3q4mj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PanelContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ResetButton" type="Button" parent="UI/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Reset"
+
+[node name="ToggleDynamicButton" type="Button" parent="UI/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ToggleFollowerButton" type="Button" parent="UI/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="TogglePathButton" type="Button" parent="UI/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ToggleFleeButton" type="Button" parent="UI/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="AgentStateLabel" type="Label" parent="UI/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TargetPositionLabel" type="Label" parent="UI/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="FollowerStateLabel" type="Label" parent="UI/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="FollowerDistanceLabel" type="Label" parent="UI/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="WandererStateLabel" type="Label" parent="UI/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Wanderer" parent="." instance=ExtResource("8_672b2")]
+position = Vector2(912, 594)
